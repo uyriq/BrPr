@@ -10,14 +10,11 @@ export const ApplicationContainer = ({ children }) => {
                 main: {
                     background: customColors.backgroundMain,
                     width: '100vw',
-                    height: '100vh',
 
                     marginLeft: '10px',
                     marginRight: '10px',
-                    marginTop: '3%',
-                    marginBottom: '1%',
-
-                    border: customColors.stackLineBorder1,
+                    marginTop: '0%',
+                    marginBottom: '0%',
                 },
             }}
             fixed
@@ -25,10 +22,10 @@ export const ApplicationContainer = ({ children }) => {
                 <Footer height={60} p="md">
                     <Group position="center" spacing="xl">
                         <Text size="sm">
-                            <span style={{ fontWeight: 'bolder' }}>🕛 matrix path finder for cyberpunk 2077 </span>
+                            <span style={{ fontWeight: 'bold' }}>🕛 matrix path finder cyberpunk 2077 alike</span>
                         </Text>
                         <Text size="sm">
-                            <span style={{ fontWeight: 'bolder' }}>🎆 Breach Protocol/QuickHack mini games </span>
+                            <span style={{ fontWeight: 'bold' }}>🎆 Breach Protocol/QuickHack mini game </span>
                         </Text>
                     </Group>
                 </Footer>
