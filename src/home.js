@@ -13,14 +13,31 @@ import {
 } from '@mantine/core'
 import { useMediaQuery, useIntersection, useScrollIntoView } from '@mantine/hooks'
 import { Plus, Minus } from 'tabler-icons-react'
+import { customColors } from 'constants-colors'
 
 export default function Home() {
     const [activeTab, setActiveTab] = useState('matrix')
     const theme = useMantineTheme()
     const largeScreen = useMediaQuery(`(min-width: ${theme.breakpoints.xl.toFixed()}px)`)
     const columns = largeScreen ? 2 : 1
-    const width = largeScreen ? '30%' : '90%'
+    const width = largeScreen ? '35vw' : '90vw'
     const padding = largeScreen ? '80vw' : '10vw'
+    const defaultStyle = {
+        main: {
+            background: customColors.backgroundMain,
+            width: '98vw',
+            justify: 'center',
+            marginLeft: '10px',
+            marginRight: '10px',
+            marginTop: '1%',
+            marginBottom: '1%',
+            padding: '1% 1% 1% 1%',
+            border: customColors.stackLineBorder1,
+        },
+        sequenceswrapp: { width: width },
+        matrixwrapp: { minWidth: width, maxWidth: width },
+    }
+
     const style = largeScreen
         ? {
               position: 'relative',
@@ -65,13 +82,13 @@ export default function Home() {
                 )}
             </Box>
             <SimpleGrid
-                cols={1}
+                cols={columns}
                 breakpoints={[
                     { minWidth: 'xl', cols: 2 },
                     { maxWidth: 900, cols: 1 },
                 ]}
             >
-                <Group ref={matrixRef}>
+                <Group ref={matrixRef} style={{ ...defaultStyle.main, ...defaultStyle.matrixwrapp }}>
                     1
                     <Plus />
                     <Plus />
@@ -226,7 +243,7 @@ export default function Home() {
                     <Plus />
                     <Plus />
                 </Group>
-                <Group ref={seqRef}>
+                <Group ref={seqRef} style={{ ...defaultStyle.main, ...defaultStyle.sequenceswrapp }}>
                     2
                     <Minus />
                     <Minus />
