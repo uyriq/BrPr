@@ -6,9 +6,17 @@ import Home from './home'
 function App() {
     const pageProps = { undefined }
     return (
-        <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme: 'dark' }}>
+        <MantineProvider
+            withGlobalStyles
+            withNormalizeCSS
+            theme={{
+                colorScheme: 'dark',
+                // use custom font in MantineProvider
+                fontFamily: 'BlenderProBook,sans-serif',
+            }}
+        >
+            <CustomFonts />
             <Component {...pageProps}>
-                <CustomFonts />
                 <Home />
             </Component>
         </MantineProvider>

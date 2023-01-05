@@ -10,16 +10,13 @@ export const ApplicationContainer = ({ children }) => {
                 main: {
                     background: customColors.backgroundMain,
                     width: '100vw',
-
-                    marginLeft: '10px',
-                    marginRight: '10px',
-                    marginTop: '0%',
-                    marginBottom: '0%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 },
             }}
             fixed
             footer={
-                <Footer height={60} p="md">
+                <Footer height={60}>
                     <Group position="center" spacing="xl">
                         <Text size="sm">
                             <span style={{ fontWeight: 'bold' }}>🕛 matrix path finder cyberpunk 2077 alike</span>
@@ -31,7 +28,7 @@ export const ApplicationContainer = ({ children }) => {
                 </Footer>
             }
             header={
-                <Header height={70} p="md">
+                <Header height={70}>
                     <Center>
                         <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
                             <Text size="lg" weight="bolder">
@@ -42,7 +39,7 @@ export const ApplicationContainer = ({ children }) => {
                 </Header>
             }
         >
-            {children}
+            <Center>{children}</Center>
         </AppShell>
     )
 }
