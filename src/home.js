@@ -21,6 +21,12 @@ export default function Home() {
     const [activeTab, setActiveTab] = useState('matrix')
     const theme = useMantineTheme()
     const largeScreen = useMediaQuery(`(min-width: ${theme.breakpoints.xl.toFixed()}px)`)
+    const containerRef = useRef()
+    const { ref, entry } = useIntersection({
+        root: containerRef.current,
+        rootMargin: '10px 0px 10px 0px',
+        threshold: 1,
+    })
     const columnsL = largeScreen ? 4 : 6
     const columnsR = largeScreen ? 8 : 6
     const widthL = largeScreen ? '35vw' : '90vw'
@@ -91,7 +97,7 @@ export default function Home() {
                 >
                     {!largeScreen && (
                         <Tabs
-                            value={activeTab}
+                            defaultValue={entry?.isIntersecting ? 'matrix' : 'sequences'}
                             onTabChange={setActiveTab}
                             sx={{
                                 visibility: largeScreen ? 'hidden' : 'visible',
@@ -121,6 +127,7 @@ export default function Home() {
                         ...defaultStyle.main,
                         ...defaultStyle.container,
                     }}
+                    ref={containerRef}
                 >
                     <Text
                         span={true}
@@ -130,9 +137,10 @@ export default function Home() {
                         sx={{
                             letterSpacing: '-4px',
                             fontStretch: 'condensed',
+                            fontFamily: 'Roboto Mono, sans-serif, mono',
                         }}
                     >
-                        Breach time Remaining
+                        Breach time Remaining {entry?.isIntersecting ? 'matrix' : 'sequences'}
                     </Text>
                     <Grid>
                         <Grid.Col
@@ -151,157 +159,6 @@ export default function Home() {
                             <Box style={{ ...defaultStyle.matrixwrapp }}>
                                 1
                                 <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
-                                <Plus />
                             </Box>
                         </Grid.Col>
                         <Grid.Col
@@ -315,166 +172,14 @@ export default function Home() {
                                 margin: '10% 0% 0% 0%',
                             }}
                         >
-                            <Box style={{ ...defaultStyle.sequenceswrapp }}>
+                            <Box style={{ ...defaultStyle.sequenceswrapp }} ref={ref}>
                                 2
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
-                                <Minus />
                                 <Minus />
                             </Box>
                         </Grid.Col>
                     </Grid>
                 </Container>
+                <Text> 1 {entry?.isIntersecting ? 'matrix' : 'sequences'} </Text>
             </Box>
         </>
     )
