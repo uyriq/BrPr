@@ -27,11 +27,63 @@ export default function Home() {
         rootMargin: '10px 0px 10px 0px',
         threshold: 1,
     })
+
+
+
+
     const columnsL = largeScreen ? 4 : 6
     const columnsR = largeScreen ? 8 : 6
     const widthL = largeScreen ? '35vw' : '90vw'
     const widthR = largeScreen ? '55vw' : '90vw'
     const padding = largeScreen ? '80vw' : '10vw'
+    
+// TODO ---- переделать  ---- 
+
+    const slugs = useRef<HTMLDivElement[]>([]);
+    const filteredHeadings = headings.filter((heading) => heading.depth > 1);
+  
+    useEffect(() => {
+      slugger.reset();
+      slugs.current = filteredHeadings.map(
+        (heading) => document.getElementById(slugger.slug(heading.value)) as HTMLDivElement
+      );
+    }, [headings]);
+
+    function getActiveElement(rects) {
+      if (rects.length === 0) {
+        return -1;
+      }
+    
+      const closest = rects.reduce(
+        (acc, item, index) => {
+          if (Math.abs(acc.position) < Math.abs(item.y)) {
+            return acc;
+          }
+          return {
+            index,
+            position: item.y,
+          };
+        },
+        { index: 0, position: rects[0].y }
+      );
+    
+      return closest.index;
+    }
+    
+
+
+    const handleScroll = () => {
+      setActive(getActiveElement(slugs.current.map((d) => d.getBoundingClientRect())));
+    };
+  
+    useEffect(() => {
+      setActive(getActiveElement(slugs.current.map((d) => d.getBoundingClientRect())));
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // // TODO ---- переделать ---- 
+
     const defaultStyle = {
         main: {
             background: customColors.backgroundMain,
