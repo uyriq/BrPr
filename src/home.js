@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect, createRef } from 'react'
 import {
     ActionIcon,
     Box,
@@ -18,71 +18,71 @@ import { Plus, Minus } from 'tabler-icons-react'
 import { customColors } from 'constants-colors'
 
 export default function Home() {
-    const [activeTab, setActiveTab] = useState('matrix')
+    const tabLabels = ['matrix', 'sequences']
+    const [activeTab, setActiveTab] = useState(tabLabels[0])
     const theme = useMantineTheme()
     const largeScreen = useMediaQuery(`(min-width: ${theme.breakpoints.xl.toFixed()}px)`)
-    const containerRef = useRef()
+    const containerRef = useRef(tabLabels.map(() => createRef()))
+
     const { ref, entry } = useIntersection({
         root: containerRef.current,
         rootMargin: '10px 0px 10px 0px',
         threshold: 1,
     })
 
-
-
-
     const columnsL = largeScreen ? 4 : 6
     const columnsR = largeScreen ? 8 : 6
     const widthL = largeScreen ? '35vw' : '90vw'
     const widthR = largeScreen ? '55vw' : '90vw'
     const padding = largeScreen ? '80vw' : '10vw'
-    
-// TODO ---- переделать  ---- 
 
-    const slugs = useRef<HTMLDivElement[]>([]);
-    const filteredHeadings = headings.filter((heading) => heading.depth > 1);
-  
+    // TODO ---- переделать  ----
+    // https://stackoverflow.com/questions/54940399/how-target-dom-with-react-useref-in-map
+    // https://github.com/mantinedev/mantine/blob/modal-base/docs/src/components/MdxPage/TableOfContents/TableOfContents.tsx
+
     useEffect(() => {
-      slugger.reset();
-      slugs.current = filteredHeadings.map(
-        (heading) => document.getElementById(slugger.slug(heading.value)) as HTMLDivElement
-      );
-    }, [headings]);
+        containerRef?.current[0]?.current?.focus()
+    }, [])
+
+    /*     useEffect(() => {
+        //  tabLabels.current = document.getElementById(activeTab)
+        tabLabels.forEach((label, index) => {
+            containerRef.current[index] = document.getElementById(label)
+        })
+    }, [tabLabels]) */
 
     function getActiveElement(rects) {
-      if (rects.length === 0) {
-        return -1;
-      }
-    
-      const closest = rects.reduce(
-        (acc, item, index) => {
-          if (Math.abs(acc.position) < Math.abs(item.y)) {
-            return acc;
-          }
-          return {
-            index,
-            position: item.y,
-          };
-        },
-        { index: 0, position: rects[0].y }
-      );
-    
-      return closest.index;
-    }
-    
+        if (rects.length === 0) {
+            return -1
+        }
 
+        const closest = rects.reduce(
+            (acc, item, index) => {
+                if (Math.abs(acc.position) < Math.abs(item.y)) {
+                    return acc
+                }
+                return {
+                    index,
+                    position: item.y,
+                }
+            },
+            { index: 0, position: rects[0].y }
+        )
+
+        return closest.index
+    }
 
     const handleScroll = () => {
-      setActive(getActiveElement(slugs.current.map((d) => d.getBoundingClientRect())));
-    };
-  
-    useEffect(() => {
-      setActive(getActiveElement(slugs.current.map((d) => d.getBoundingClientRect())));
-      window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+        setActiveTab(getActiveElement(containerRef.current.map((d) => d.getBoundingClientRect())))
+    }
 
-    // // TODO ---- переделать ---- 
+    useEffect(() => {
+        setActiveTab(getActiveElement(containerRef.current.map((d) => d.getBoundingClientRect())))
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
+    // // TODO ---- переделать ----
 
     const defaultStyle = {
         main: {
@@ -208,7 +208,7 @@ export default function Home() {
                                 margin: '10% 0% 0% 0%',
                             }}
                         >
-                            <Box style={{ ...defaultStyle.matrixwrapp }}>
+                            <Box style={{ ...defaultStyle.matrixwrapp }} id={tabLabels[0]} ref={containerRef[0]}>
                                 1
                                 <Plus />
                             </Box>
@@ -224,7 +224,7 @@ export default function Home() {
                                 margin: '10% 0% 0% 0%',
                             }}
                         >
-                            <Box style={{ ...defaultStyle.sequenceswrapp }} ref={ref}>
+                            <Box style={{ ...defaultStyle.sequenceswrapp }} id={tabLabels[1]} ref={containerRef[1]}>
                                 2
                                 <Minus />
                             </Box>
