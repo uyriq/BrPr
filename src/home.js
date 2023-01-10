@@ -13,7 +13,7 @@ import {
     useMantineTheme,
     Center,
 } from '@mantine/core'
-import { useMediaQuery, useIntersection, useScrollIntoView } from '@mantine/hooks'
+import { useMediaQuery, useIntersection, useScrollIntoView, useLogger, useEventListener } from '@mantine/hooks'
 import { Plus, Minus } from 'tabler-icons-react'
 import { customColors } from 'constants-colors'
 
@@ -22,36 +22,33 @@ export default function Home() {
     const [activeTab, setActiveTab] = useState(tabLabels[0])
     const theme = useMantineTheme()
     const largeScreen = useMediaQuery(`(min-width: ${theme.breakpoints.xl.toFixed()}px)`)
-    const containerRef = useRef(tabLabels.map(() => createRef()))
-
-    const { ref, entry } = useIntersection({
-        root: containerRef.current,
-        rootMargin: '10px 0px 10px 0px',
-        threshold: 1,
-    })
+    const containerRef = useEventListener('scroll', handleScroll)
 
     const columnsL = largeScreen ? 4 : 6
     const columnsR = largeScreen ? 8 : 6
     const widthL = largeScreen ? '35vw' : '90vw'
     const widthR = largeScreen ? '55vw' : '90vw'
-    const padding = largeScreen ? '80vw' : '10vw'
-
-    // TODO ---- переделать  ----
-    // https://stackoverflow.com/questions/54940399/how-target-dom-with-react-useref-in-map
-    // https://github.com/mantinedev/mantine/blob/modal-base/docs/src/components/MdxPage/TableOfContents/TableOfContents.tsx
+    const padding = largeScreen
+        ? '80vw'
+        : '10vw' *
+          // TODO ---- переделать  ----
+          // https://beta.reactjs.org/learn/manipulating-the-dom-with-refs#how-to-manage-a-list-of-refs-using-a-ref-callback
+          // https://github.com/mantinedev/mantine/blob/modal-base/docs/src/components/MdxPage/TableOfContents/TableOfContents.tsx
+          function getMap() {
+              if (!itemsRef.current) {
+                  // Initialize the Map on first usage.
+                  itemsRef.current = new Map()
+              }
+              return itemsRef.current
+          }
+    const node = map.get(itemId)
 
     useEffect(() => {
-        containerRef?.current[0]?.current?.focus()
-    }, [])
-
-    /*     useEffect(() => {
-        //  tabLabels.current = document.getElementById(activeTab)
-        tabLabels.forEach((label, index) => {
-            containerRef.current[index] = document.getElementById(label)
-        })
-    }, [tabLabels]) */
+        // собрать все элементы одного класса в массив с позициями
+    }, [tabLabels])
 
     function getActiveElement(rects) {
+        // из массива позиций найти ближайший к rects элемент, отдать его id
         if (rects.length === 0) {
             return -1
         }
@@ -66,18 +63,22 @@ export default function Home() {
                     position: item.y,
                 }
             },
-            { index: 0, position: rects[0].y }
+            { index: 0, position: rects[0]?.y }
         )
 
         return closest.index
     }
 
     const handleScroll = () => {
-        setActiveTab(getActiveElement(containerRef.current.map((d) => d.getBoundingClientRect())))
+        const map = getMap()
+
+        setActiveTab(getActiveElement(rects))
     }
 
     useEffect(() => {
-        setActiveTab(getActiveElement(containerRef.current.map((d) => d.getBoundingClientRect())))
+        const rects = containerRef.current.map((d) => d.getBoundingClientRect())
+        setActiveTab(getActiveElement(rects))
+
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
@@ -133,7 +134,7 @@ export default function Home() {
         offset: 100,
         alignment: 'start',
     })
-
+    useLogger('@', containerRef)
     return (
         <>
             <Box style={style}>
@@ -149,7 +150,6 @@ export default function Home() {
                 >
                     {!largeScreen && (
                         <Tabs
-                            defaultValue={entry?.isIntersecting ? 'matrix' : 'sequences'}
                             onTabChange={setActiveTab}
                             sx={{
                                 visibility: largeScreen ? 'hidden' : 'visible',
